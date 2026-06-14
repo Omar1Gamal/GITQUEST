@@ -1,0 +1,84 @@
+.sandbox-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: var(--space-6);
+  background-color: var(--bg-surface);
+  border-right: 1px solid var(--border-color);
+  overflow-y: auto;
+}
+
+.sandbox-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.sandbox-back-btn {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-sm);
+}
+
+.sandbox-title {
+  margin: 0;
+  font-size: var(--text-xl);
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--accent-emerald), var(--accent-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sandbox-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.sandbox-tips {
+  background-color: rgba(88, 166, 255, 0.1);
+  border: 1px solid rgba(88, 166, 255, 0.2);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+
+.sandbox-tips h3 {
+  margin-top: 0;
+  margin-bottom: var(--space-3);
+  color: var(--accent-cyan);
+  font-size: var(--text-md);
+}
+
+.sandbox-tips ul {
+  margin: 0;
+  padding-left: var(--space-5);
+}
+
+.sandbox-tips li {
+  margin-bottom: var(--space-2);
+}
+
+.sandbox-commands h3 {
+  margin-top: 0;
+  margin-bottom: var(--space-4);
+  color: var(--text-primary);
+  font-size: var(--text-md);
+}
+
+.command-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.cmd {
+  background-color: var(--bg-base);
+  border: 1px solid var(--border-color);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--accent-magenta);
+}

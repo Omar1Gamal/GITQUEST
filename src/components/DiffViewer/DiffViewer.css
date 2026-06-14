@@ -1,0 +1,209 @@
+.diff-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.diff-modal {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  width: 80%;
+  max-width: 1000px;
+  height: 80vh;
+  max-height: 800px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.2s ease-out;
+}
+
+.diff-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-base);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.diff-header-info h3 {
+  margin: 0 0 var(--space-2) 0;
+  color: var(--accent-emerald);
+  font-family: var(--font-mono);
+  font-size: var(--text-md);
+}
+
+.diff-message {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--text-md);
+}
+
+.diff-close-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0 var(--space-2);
+}
+
+.diff-close-btn:hover {
+  color: var(--text-primary);
+}
+
+.diff-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.diff-empty {
+  padding: var(--space-6);
+  color: var(--text-secondary);
+  font-style: italic;
+  width: 100%;
+  text-align: center;
+}
+
+.diff-sidebar {
+  width: 250px;
+  border-right: 1px solid var(--border-color);
+  background-color: var(--bg-base);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.diff-sidebar-title {
+  padding: var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.diff-file-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  transition: background-color 0.1s;
+}
+
+.diff-file-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.diff-file-item.active {
+  background-color: rgba(88, 166, 255, 0.1);
+  border-left: 3px solid var(--accent-cyan);
+}
+
+.diff-status-icon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.diff-status-icon.added { background-color: rgba(63, 185, 80, 0.2); color: #3fb950; }
+.diff-status-icon.deleted { background-color: rgba(248, 81, 73, 0.2); color: #f85149; }
+.diff-status-icon.modified { background-color: rgba(210, 153, 34, 0.2); color: #d29922; }
+
+.diff-content {
+  flex: 1;
+  background-color: #0d1117; /* GitHub dark theme background */
+  overflow-y: auto;
+}
+
+.diff-code-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.diff-code-header {
+  padding: var(--space-2) var(--space-4);
+  background-color: rgba(255, 255, 255, 0.05);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.diff-code-pre {
+  margin: 0;
+  padding: var(--space-2) 0;
+  font-family: 'Fira Code', var(--font-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: pre;
+}
+
+.diff-line {
+  display: flex;
+  padding: 0 var(--space-4);
+}
+
+.diff-line-prefix {
+  width: 24px;
+  min-width: 24px;
+  text-align: center;
+  color: var(--text-secondary);
+  user-select: none;
+}
+
+.diff-line-text {
+  flex: 1;
+  word-break: break-all;
+}
+
+/* Diff Line Colors */
+.diff-added {
+  background-color: rgba(63, 185, 80, 0.15);
+}
+.diff-added .diff-line-prefix {
+  color: #3fb950;
+}
+.diff-added .diff-line-text {
+  color: #e6ffec;
+}
+
+.diff-removed {
+  background-color: rgba(248, 81, 73, 0.15);
+}
+.diff-removed .diff-line-prefix {
+  color: #f85149;
+}
+.diff-removed .diff-line-text {
+  color: #ffebe9;
+}
+
+.diff-unchanged {
+  color: #8b949e;
+}

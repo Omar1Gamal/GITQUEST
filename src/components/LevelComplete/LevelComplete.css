@@ -1,0 +1,107 @@
+/* ─── Level Complete Modal Styles ─────────────────────── */
+
+.level-complete-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-modal);
+  padding: var(--space-4);
+}
+
+.level-complete-modal {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: var(--space-10) var(--space-8);
+  text-align: center;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.level-complete-modal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-magenta), var(--accent-amber));
+}
+
+.level-complete-icon {
+  font-size: 4rem;
+  margin-bottom: var(--space-4);
+  animation: float 2s ease-in-out infinite;
+}
+
+.level-complete-title {
+  font-size: var(--text-3xl);
+  font-weight: 800;
+  margin-bottom: var(--space-2);
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.level-complete-lesson {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-6);
+}
+
+.level-complete-rewards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-8);
+}
+
+.reward-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+}
+
+.reward-icon {
+  font-size: var(--text-xl);
+}
+
+.reward-value {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--accent-amber);
+}
+
+.achievement-reward {
+  flex-direction: column;
+  background: rgba(210, 153, 34, 0.08);
+  border-color: rgba(210, 153, 34, 0.2);
+}
+
+.achievement-name {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin-top: var(--space-1);
+}
+
+.level-complete-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}

@@ -3,7 +3,7 @@
  * Features: custom prompt, command history, branch-aware prompt.
  */
 
-import React, { useEffect, useRef, useCallback, useState } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 import { Terminal as XTerm } from '@xterm/xterm';
 import { FitAddon } from '@xterm/addon-fit';
 import '@xterm/xterm/css/xterm.css';
@@ -76,7 +76,7 @@ export default function Terminal({ onCommand, currentBranch = 'main', suggestedC
     
     // Delay fit to ensure container is rendered
     setTimeout(() => {
-      try { fitAddon.fit(); } catch (e) { /* ignore initial fit error */ }
+      try { fitAddon.fit(); } catch { /* ignore initial fit error */ }
     }, 50);
 
     xtermRef.current = term;
@@ -96,13 +96,13 @@ export default function Terminal({ onCommand, currentBranch = 'main', suggestedC
 
     // Handle resize
     const handleResize = () => {
-      try { fitAddon.fit(); } catch (e) { /* ignore */ }
+      try { fitAddon.fit(); } catch { /* ignore */ }
     };
     window.addEventListener('resize', handleResize);
 
     // Also observe container resize
     const resizeObserver = new ResizeObserver(() => {
-      try { fitAddon.fit(); } catch (e) { /* ignore */ }
+      try { fitAddon.fit(); } catch { /* ignore */ }
     });
     resizeObserver.observe(terminalRef.current);
 
@@ -111,7 +111,7 @@ export default function Terminal({ onCommand, currentBranch = 'main', suggestedC
       resizeObserver.disconnect();
       term.dispose();
     };
-  }, []);
+  }, [getPrompt]);
 
   // Handle key input
   useEffect(() => {

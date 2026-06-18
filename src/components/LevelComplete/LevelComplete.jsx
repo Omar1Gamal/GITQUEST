@@ -2,7 +2,7 @@
  * LevelComplete — Celebration modal shown when a lesson is completed.
  */
 
-import React from 'react';
+
 import ReactConfetti from 'react-confetti';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getNextLesson } from '../../lessons/lessonData.js';

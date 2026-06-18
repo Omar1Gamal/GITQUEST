@@ -2,7 +2,7 @@
  * Footer — Site-wide footer with creator contact info.
  */
 
-import React from 'react';
+
 import './Footer.css';
 
 export default function Footer() {

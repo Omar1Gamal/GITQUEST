@@ -3,7 +3,7 @@
  * Features: animated nodes, curved edges, branch labels, HEAD indicator, tooltips.
  */
 
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useGraphLayout } from './useGraphLayout.js';
 import './GitGraph.css';
 

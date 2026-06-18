@@ -2,7 +2,7 @@
  * ProgressBar — XP progress bar with level indicator.
  */
 
-import React from 'react';
+
 import useLessonStore from '../../store/useLessonStore.js';
 import './ProgressBar.css';
 

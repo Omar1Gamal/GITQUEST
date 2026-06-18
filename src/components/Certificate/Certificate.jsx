@@ -4,11 +4,20 @@
  * - After completion: full certificate with user's name + PDF download
  */
 
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import useAuthStore from '../../store/useAuthStore.js';
 import useLessonStore from '../../store/useLessonStore.js';
 import { lessons } from '../../lessons/lessonData.js';
 import './Certificate.css';
+
+// Corner ornament SVG
+const CornerOrnament = () => (
+  <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0L60 0L60 4L4 4L4 60L0 60Z" fill="#58a6ff" opacity="0.5" />
+    <path d="M8 8L40 8L40 10L10 10L10 40L8 40Z" fill="#58a6ff" opacity="0.3" />
+    <circle cx="4" cy="4" r="2" fill="#58a6ff" opacity="0.6" />
+  </svg>
+);
 
 export default function Certificate({ onBack }) {
   const { currentUser } = useAuthStore();
@@ -28,9 +37,9 @@ export default function Certificate({ onBack }) {
     day: 'numeric',
   });
 
-  // Generate a certificate ID from user email + date
-  const certId = currentUser
-    ? `GQ-${btoa(currentUser.email).substring(0, 6).toUpperCase()}-${Date.now().toString(36).toUpperCase()}`
+  // Generate a certificate ID from Firebase UID
+  const certId = currentUser?.uid
+    ? `GQ-${currentUser.uid.substring(0, 16).toUpperCase()}`
     : 'GQ-000000';
 
   const handleDownloadPDF = async () => {
@@ -64,15 +73,6 @@ export default function Certificate({ onBack }) {
       setDownloading(false);
     }
   };
-
-  // Corner ornament SVG
-  const CornerOrnament = () => (
-    <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 0L60 0L60 4L4 4L4 60L0 60Z" fill="#58a6ff" opacity="0.5" />
-      <path d="M8 8L40 8L40 10L10 10L10 40L8 40Z" fill="#58a6ff" opacity="0.3" />
-      <circle cx="4" cy="4" r="2" fill="#58a6ff" opacity="0.6" />
-    </svg>
-  );
 
   return (
     <div className="certificate-page">

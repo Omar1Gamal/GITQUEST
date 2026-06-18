@@ -3,7 +3,7 @@
  * Routes between Auth → ModuleSelector → LessonView → Certificate.
  */
 
-import React, { useState, useCallback, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import useGitStore from './store/useGitStore.js';
 import useLessonStore from './store/useLessonStore.js';
 import useAuthStore from './store/useAuthStore.js';
@@ -33,9 +33,23 @@ export default function App() {
   const [selectedCommitDiff, setSelectedCommitDiff] = useState(null);
   const lessonValidatedRef = useRef(false);
 
-  const { repositoryState, executeCommand, resetRepository } = useGitStore();
-  const { completeLesson, unlockAchievement, completedLessons } = useLessonStore();
-  const { isAuthenticated, currentUser, logout } = useAuthStore();
+  const { repositoryState, executeCommand, resetRepository, bindToUser: bindGitToUser, unbindUser: unbindGitUser } = useGitStore();
+  const { completeLesson, unlockAchievement, bindToUser: bindLessonToUser, unbindUser: unbindLessonUser } = useLessonStore();
+  const { isAuthenticated, currentUser, logout, isLoading, initAuthListener } = useAuthStore();
+
+  // ─── Firebase Auth Listener ─────────────────────────
+  useEffect(() => {
+    const unsubscribe = initAuthListener();
+    return () => unsubscribe();
+  }, [initAuthListener]);
+
+  // ─── Bind/Unbind stores when user changes ───────────
+  useEffect(() => {
+    if (currentUser?.uid) {
+      bindLessonToUser(currentUser.uid);
+      bindGitToUser(currentUser.uid);
+    }
+  }, [currentUser?.uid, bindLessonToUser, bindGitToUser]);
 
   // Get current branch from repository state
   const currentBranch = repositoryState.detachedHead
@@ -43,6 +57,15 @@ export default function App() {
     : repositoryState.head || 'main';
 
   // ─── Auth Gate ─────────────────────────────────────
+  if (isLoading) {
+    return (
+      <div className="app-loading">
+        <div className="app-loading-spinner" />
+        <span className="text-gradient" style={{ fontSize: '1.5rem', fontWeight: 700 }}>GitQuest</span>
+      </div>
+    );
+  }
+
   if (!isAuthenticated) {
     return <Auth />;
   }
@@ -158,8 +181,11 @@ export default function App() {
   };
 
   // Handle logout
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    // Save & unbind user-specific stores before signing out
+    unbindLessonUser();
+    unbindGitUser();
+    await logout();
     setShowUserMenu(false);
     setCurrentView('menu');
     setCurrentLesson(null);

@@ -21,7 +21,6 @@ const LANE_WIDTH = 80;
 const ROW_HEIGHT = 70;
 const PADDING_TOP = 40;
 const PADDING_LEFT = 60;
-const LABEL_OFFSET = 24;
 
 export function useGraphLayout(commits, branches, head, detachedHead) {
   return useMemo(() => {

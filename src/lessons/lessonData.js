@@ -545,7 +545,7 @@ export const lessons = [
       },
       {
         text: "Make a different commit on main:",
-        command: 'echo "console.log(\"app\")" > index.js',
+        command: 'echo \'console.log("app")\' > index.js',
       },
       {
         text: "Stage and commit:",
@@ -984,7 +984,7 @@ export const lessons = [
       },
       {
         text: "Add work on the feature branch:",
-        command: 'echo "const api = fetch(\"/data\")" > api.js',
+        command: 'echo \'const api = fetch("/data")\' > api.js',
       },
       {
         text: "Stage and commit:",

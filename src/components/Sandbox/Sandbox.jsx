@@ -1,4 +1,4 @@
-import React from 'react';
+
 import './Sandbox.css';
 
 export default function Sandbox({ onBack }) {

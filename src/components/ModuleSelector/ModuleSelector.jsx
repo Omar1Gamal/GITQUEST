@@ -2,7 +2,7 @@
  * ModuleSelector — Landing page / curriculum overview with three module cards.
  */
 
-import React from 'react';
+
 import { MODULES, getLessonsByModule } from '../../lessons/lessonData.js';
 import useLessonStore from '../../store/useLessonStore.js';
 import './ModuleSelector.css';

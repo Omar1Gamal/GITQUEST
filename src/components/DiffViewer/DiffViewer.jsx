@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import './DiffViewer.css';
 
 // Simple LCS-based Diff Algorithm for line-by-line comparison
@@ -67,18 +67,14 @@ export default function DiffViewer({ commit, parentCommit, onClose }) {
     return { changedFiles: changes, fileDiffs: diffs };
   }, [commit, parentCommit]);
 
-  // Set the first file as selected by default when opened
-  useMemo(() => {
-    if (changedFiles.length > 0 && !selectedFile) {
-      setSelectedFile(changedFiles[0].file);
-    } else if (changedFiles.length === 0) {
-      setSelectedFile(null);
-    }
-  }, [changedFiles]);
+  // Derived state: if selectedFile is invalid or null, use the first changed file
+  const activeFile = selectedFile && changedFiles.some(f => f.file === selectedFile)
+    ? selectedFile
+    : (changedFiles[0]?.file || null);
 
   if (!commit) return null;
 
-  const currentDiff = selectedFile ? fileDiffs[selectedFile] : [];
+  const currentDiff = activeFile ? fileDiffs[activeFile] : [];
 
   return (
     <div className="diff-modal-overlay" onClick={onClose}>
@@ -102,7 +98,7 @@ export default function DiffViewer({ commit, parentCommit, onClose }) {
                 {changedFiles.map(({ file, status }) => (
                   <button
                     key={file}
-                    className={`diff-file-item ${selectedFile === file ? 'active' : ''}`}
+                    className={`diff-file-item ${activeFile === file ? 'active' : ''}`}
                     onClick={() => setSelectedFile(file)}
                   >
                     <span className={`diff-status-icon ${status}`}>{
@@ -115,9 +111,9 @@ export default function DiffViewer({ commit, parentCommit, onClose }) {
 
               {/* Code Diff Area */}
               <div className="diff-content">
-                {selectedFile && (
+                {activeFile && (
                   <div className="diff-code-container">
-                    <div className="diff-code-header">{selectedFile}</div>
+                    <div className="diff-code-header">{activeFile}</div>
                     <pre className="diff-code-pre">
                       {currentDiff.map((line, idx) => (
                         <div key={idx} className={`diff-line diff-${line.type}`}>

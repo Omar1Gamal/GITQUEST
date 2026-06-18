@@ -6,6 +6,17 @@
 import { generateHash } from './hashGenerator.js';
 import { parseCommand, parseEchoRedirect } from './commandParser.js';
 
+// Sanitize HTML entities to prevent XSS in terminal output
+function sanitizeHtml(str) {
+  if (typeof str !== 'string') return str;
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 export class GitEngine {
   constructor(initialState = null) {
     if (initialState) {
@@ -157,15 +168,17 @@ export class GitEngine {
       case 'echo': {
         const redirect = parseEchoRedirect(parsed.raw);
         if (redirect) {
+          // Sanitize file content to prevent XSS
+          const safeContent = sanitizeHtml(redirect.content);
           if (redirect.append && this.workingDirectory.has(redirect.filename)) {
             const existing = this.workingDirectory.get(redirect.filename);
-            this.workingDirectory.set(redirect.filename, existing + '\n' + redirect.content);
+            this.workingDirectory.set(redirect.filename, existing + '\n' + safeContent);
           } else {
-            this.workingDirectory.set(redirect.filename, redirect.content);
+            this.workingDirectory.set(redirect.filename, safeContent);
           }
           return { success: true, output: '' };
         }
-        return { success: true, output: parsed.args.join(' ') };
+        return { success: true, output: sanitizeHtml(parsed.args.join(' ')) };
       }
 
       case 'cd':
@@ -893,8 +906,6 @@ export class GitEngine {
       targetHash = commit.hash;
     }
 
-    const oldHash = this.getCurrentCommitHash();
-
     if (!this.detachedHead) {
       this.branches[this.head] = targetHash;
     }
@@ -939,7 +950,7 @@ export class GitEngine {
 
     // Revert: apply inverse of the commit
     const revertedTree = new Map(currentTree);
-    for (const [file, content] of Object.entries(commit.tree)) {
+    for (const file of Object.keys(commit.tree)) {
       if (parentTree.has(file)) {
         revertedTree.set(file, parentTree.get(file));
       } else {

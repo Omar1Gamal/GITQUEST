@@ -2,7 +2,7 @@
  * LessonPanel — Displays lesson instructions, objectives, and progress.
  */
 
-import React, { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { MODULES } from '../../lessons/lessonData.js';
 import './LessonPanel.css';
 

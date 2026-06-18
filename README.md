@@ -95,13 +95,6 @@ It supports advanced operations like:
 
 ---
 
-## 🔒 Security Posture
-- **XSS Prevention:** Terminal output (`echo`) is strictly sanitized before rendering.
-- **Data Privacy:** Passwords are never stored locally. User progress is namespaced securely via Firebase UID `localStorage`.
-- **Content Security Policy:** Strict CSP implementation prevents malicious external scripts from executing in production.
-
----
-
 ## 📜 License
 This project is licensed under the MIT License. Feel free to fork it, use it for educational purposes, and build upon it!
 

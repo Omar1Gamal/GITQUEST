@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 
 // ─── Firebase Config ─────────────────────────────────
 // Replace these values with your own Firebase project config
@@ -16,9 +17,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
+const db = getFirestore(app);
 
 // Force account selection on every Google sign-in
 googleProvider.setCustomParameters({ prompt: 'select_account' });
 
-export { auth, googleProvider };
+export { auth, googleProvider, db };
 export default app;

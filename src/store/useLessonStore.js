@@ -5,6 +5,8 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { db } from '../lib/firebase.js';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 // Default state for a fresh user
 const defaultState = {
@@ -80,12 +82,13 @@ const useLessonStore = create(
        * Bind this store to a specific user.
        * Loads that user's saved progress from localStorage, or resets to defaults.
        */
-      bindToUser: (uid) => {
+      bindToUser: async (uid) => {
         if (!uid) return;
         
         const storageKey = `gitquest-lesson-${uid}`;
+        
+        // 1. Fast local load
         const saved = localStorage.getItem(storageKey);
-
         if (saved) {
           try {
             const parsed = JSON.parse(saved);
@@ -99,6 +102,24 @@ const useLessonStore = create(
           }
         } else {
           set({ ...defaultState, _boundUid: uid });
+        }
+
+        // 2. Fetch from Firestore for cross-device sync
+        try {
+          const docRef = doc(db, 'users', uid);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            const cloudData = docSnap.data().lessonState;
+            if (cloudData) {
+              set({
+                ...defaultState,
+                ...cloudData,
+                _boundUid: uid,
+              });
+            }
+          }
+        } catch (error) {
+          console.error('Failed to sync from Firestore:', error);
         }
       },
 
@@ -142,17 +163,21 @@ const useLessonStore = create(
           const uid = value?.state?._boundUid;
           if (uid) {
             const userKey = `gitquest-lesson-${uid}`;
-            const toSave = {
-              state: {
-                currentModule: value.state.currentModule,
-                currentLessonIndex: value.state.currentLessonIndex,
-                completedLessons: value.state.completedLessons,
-                xp: value.state.xp,
-                level: value.state.level,
-                achievements: value.state.achievements,
-              },
+            const stateToSave = {
+              currentModule: value.state.currentModule,
+              currentLessonIndex: value.state.currentLessonIndex,
+              completedLessons: value.state.completedLessons,
+              xp: value.state.xp,
+              level: value.state.level,
+              achievements: value.state.achievements,
             };
+            
+            const toSave = { state: stateToSave };
             localStorage.setItem(userKey, JSON.stringify(toSave));
+
+            // Sync to Firestore
+            setDoc(doc(db, 'users', uid), { lessonState: stateToSave }, { merge: true })
+              .catch(err => console.error('Firestore sync error:', err));
           }
         },
         removeItem: (name) => localStorage.removeItem(name),

@@ -4,6 +4,7 @@
  */
 
 import { useState, useRef, useEffect } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import useGitStore from './store/useGitStore.js';
 import useLessonStore from './store/useLessonStore.js';
 import useAuthStore from './store/useAuthStore.js';
@@ -376,6 +377,9 @@ export default function App() {
           onClose={() => setSelectedCommitDiff(null)}
         />
       )}
+
+      {/* Vercel Analytics */}
+      <Analytics />
     </div>
   );
 }

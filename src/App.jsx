@@ -111,9 +111,14 @@ export default function App() {
 
     // After command, check lesson progress
     if (currentLesson && !lessonValidatedRef.current) {
-      // Advance the step counter
-      const nextStep = Math.min(currentStep + 1, currentLesson.instructions.length - 1);
-      setCurrentStep(nextStep);
+      // Advance the step counter only if the command was recognized/successful
+      const wasOnLastStep = currentStep === currentLesson.instructions.length - 1;
+      let nextStep = currentStep;
+      
+      if (result && result.success !== false) {
+        nextStep = Math.min(currentStep + 1, currentLesson.instructions.length - 1);
+        setCurrentStep(nextStep);
+      }
 
       // Update suggested command
       if (nextStep < currentLesson.instructions.length && currentLesson.instructions[nextStep]?.command) {
@@ -133,7 +138,8 @@ export default function App() {
       const freshState = useGitStore.getState().repositoryState;
 
       // Validate lesson completion
-      if (currentLesson.validator && currentLesson.validator(freshState)) {
+      // Only complete if they've reached the final step's instructions
+      if (wasOnLastStep && currentLesson.validator && currentLesson.validator(freshState)) {
         lessonValidatedRef.current = true;
         setCompletedSteps(currentLesson.objectives.length);
 

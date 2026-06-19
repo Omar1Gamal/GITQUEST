@@ -21,7 +21,7 @@ const CornerOrnament = () => (
 
 export default function Certificate({ onBack }) {
   const { currentUser } = useAuthStore();
-  const { completedLessons, xp, level } = useLessonStore();
+  const { completedLessons } = useLessonStore();
   const certificateRef = useRef(null);
   const [downloading, setDownloading] = useState(false);
 
@@ -74,6 +74,20 @@ export default function Certificate({ onBack }) {
     }
   };
 
+  const handleShareLinkedIn = () => {
+    // LinkedIn "Add to Profile" certification URL
+    const params = new URLSearchParams({
+      startTask: 'CERTIFICATION_NAME',
+      name: 'GitQuest Mastery Program — Git Version Control',
+      organizationName: 'GitQuest',
+      issueYear: new Date().getFullYear().toString(),
+      issueMonth: (new Date().getMonth() + 1).toString(),
+      certId: certId,
+      certUrl: window.location.origin,
+    });
+    window.open(`https://www.linkedin.com/profile/add?${params.toString()}`, '_blank');
+  };
+
   return (
     <div className="certificate-page">
       {/* Header */}
@@ -104,6 +118,14 @@ export default function Certificate({ onBack }) {
         ) : (
           <button className="btn btn-primary btn-lg" onClick={onBack}>
             ← Continue Learning
+          </button>
+        )}
+        {isComplete && (
+          <button className="btn btn-linkedin btn-lg" onClick={handleShareLinkedIn}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style={{ marginRight: '8px' }}>
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+            </svg>
+            Add to LinkedIn
           </button>
         )}
         <button className="btn btn-secondary btn-lg" onClick={onBack}>
@@ -163,20 +185,6 @@ export default function Certificate({ onBack }) {
             history rewriting techniques.
           </p>
 
-          <div className="cert-stats">
-            <div className="cert-stat">
-              <span className="cert-stat-value">{totalLessons}</span>
-              <span className="cert-stat-label">Lessons</span>
-            </div>
-            <div className="cert-stat">
-              <span className="cert-stat-value">{isComplete ? xp : '—'}</span>
-              <span className="cert-stat-label">XP Earned</span>
-            </div>
-            <div className="cert-stat">
-              <span className="cert-stat-value">{isComplete ? `Level ${level}` : '—'}</span>
-              <span className="cert-stat-label">Achieved</span>
-            </div>
-          </div>
 
           <div className="cert-footer">
             <div className="cert-date">{isComplete ? completionDate : '—'}</div>

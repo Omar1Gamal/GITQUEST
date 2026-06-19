@@ -345,10 +345,6 @@
     padding: 6% 5%;
   }
 
-  .cert-stats {
-    gap: 1rem;
-  }
-
   .certificate-actions {
     flex-direction: column;
     width: 100%;
@@ -359,4 +355,21 @@
     font-size: 1.2rem;
     padding: 0.3rem 1rem;
   }
+}
+
+/* LinkedIn share button */
+.btn-linkedin {
+  background: #0A66C2;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.btn-linkedin:hover {
+  background: #004182;
+  transform: translateY(-1px);
 }

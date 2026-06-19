@@ -84,9 +84,9 @@ const useLessonStore = create(
        */
       bindToUser: async (uid) => {
         if (!uid) return;
-        
+
         const storageKey = `gitquest-lesson-${uid}`;
-        
+
         // 1. Fast local load
         const saved = localStorage.getItem(storageKey);
         if (saved) {
@@ -171,7 +171,7 @@ const useLessonStore = create(
               level: value.state.level,
               achievements: value.state.achievements,
             };
-            
+
             const toSave = { state: stateToSave };
             localStorage.setItem(userKey, JSON.stringify(toSave));
 
